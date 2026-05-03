@@ -1,5 +1,10 @@
+import os
 import requests
 import pandas as pd
+from dotenv import load_dotenv
+load_dotenv()
+
+MY_KEY = os.getenv('ALPHAVANTAGE_API_KEY')
 
 # 1. Paste your key inside these quotes
 MY_KEY = '0P5RS30RBWGCEWFI'

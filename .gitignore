@@ -1,1 +1,16 @@
-venv
+# 1. Virtual Environment (The most important one)
+venv/
+env/
+__pycache__/venv
+
+#Financial data (Don't upload CSVs to GitH - too big)
+*.CSVs
+*.json
+*.xlsx
+
+#3 Security (Never upload API keys)
+.env
+
+#4 OS Clutter
+.DS_Store 
+Thumbs.db
