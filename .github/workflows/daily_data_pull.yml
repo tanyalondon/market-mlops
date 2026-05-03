@@ -18,7 +18,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests pandas
+        run: pip install requests pandas python-dotenv
 
       - name: Run script
         run: python fetch_market_data.py
