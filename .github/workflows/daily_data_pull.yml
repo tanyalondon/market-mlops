@@ -2,8 +2,8 @@ name: Daily Market Data Pull
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Runs at midnight every day
-  workflow_dispatch: # Allows you to run it manually for testing
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -12,12 +12,12 @@ jobs:
       contents: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Updated version (No more warning!)
         with:
           ref: main
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # Updated version (No more warning!)
         with:
           python-version: '3.11'
 
@@ -25,22 +25,18 @@ jobs:
         run: pip install requests pandas python-dotenv
 
       - name: Run script
+        env:
+          ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
         run: python fetch_market_data.py
 
       - name: Commit and push changes
+        env:
+          # This uses your personal token which has "Owner" rights
+          PERSONAL_TOKEN: ${{ secrets.MY_GITHUB_PAT }}
         run: |
-          # 1. Bypass "Safe Directory" restrictions
-          git config --global --add safe.directory /github/workspace
-          
-          # 2. Setup professional identity
-          git config --global user.name "Tanya Rofani Automation"
-          git config --global user.email "tanya-action@github.com"
-          
-          # 3. Handle the commit (exit 0 if no changes to prevent a "failure")
+          git config --global user.name "Tanya Rofani"
+          git config --global user.email "your-email@example.com"
           git add NVDA_market_data.csv
-          git commit -m "auto: periodic data update [skip ci]" || exit 0
-          
-          # 4. Use the built-in token with a direct push URL
-          git push https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@://github.com{{ github.repository }}.git HEAD:main
-
-
+          git commit -m "auto: update market data" || exit 0
+          # We use your PAT to bypass the 128 error
+          git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@://github.com{{ github.repository }}.git HEAD:main

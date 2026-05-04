@@ -7,7 +7,6 @@ load_dotenv()
 MY_KEY = os.getenv('ALPHAVANTAGE_API_KEY')
 
 # 1. Paste your key inside these quotes
-MY_KEY = '0P5RS30RBWGCEWFI'
  
 
 # This is a solid, pre-built link. Do not change anything but the API key at the end.
