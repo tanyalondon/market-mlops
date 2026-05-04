@@ -38,4 +38,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "auto: update market data"
-          file_pattern: 'NVDA_data.csv'
+          file_pattern: 'NNVDA_test_automation.csv'
