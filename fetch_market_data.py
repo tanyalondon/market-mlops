@@ -21,7 +21,7 @@ def fetch_data():
         # Check if the API returned a valid time series
         if "Time Series (Daily)" in data:
             df = pd.DataFrame.from_dict(data["Time Series (Daily)"], orient='index')
-            df.to_csv("NVDA_data.csv")
+            df.to_csv("NVDA_test_automation.csv") #("NVDA_data.csv")
             print("Success! 'NVDA_data.csv' has been created on your Desktop.")
         else:
             print("The API connected, but didn't return data. Message from Alpha Vantage:")
