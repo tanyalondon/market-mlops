@@ -28,11 +28,15 @@ jobs:
         run: python fetch_market_data.py
 
       - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Uses the built-in token
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add NVDA_market_data.csv
+          # The '|| exit 0' ensures it doesn't fail if the data hasn't changed
           git commit -m "auto: update market data" || exit 0
-          git push
+          # This line uses the token to force the push
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@://github.com{{ github.repository }}.git main
 
 
