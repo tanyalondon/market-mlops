@@ -28,15 +28,19 @@ jobs:
         run: python fetch_market_data.py
 
       - name: Commit and push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Uses the built-in token
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
+          # 1. Bypass "Safe Directory" restrictions
+          git config --global --add safe.directory /github/workspace
+          
+          # 2. Setup professional identity
+          git config --global user.name "Tanya Rofani Automation"
+          git config --global user.email "tanya-action@github.com"
+          
+          # 3. Handle the commit (exit 0 if no changes to prevent a "failure")
           git add NVDA_market_data.csv
-          # The '|| exit 0' ensures it doesn't fail if the data hasn't changed
-          git commit -m "auto: update market data" || exit 0
-          # This line uses the token to force the push
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@://github.com{{ github.repository }}.git main
+          git commit -m "auto: periodic data update [skip ci]" || exit 0
+          
+          # 4. Use the built-in token with a direct push URL
+          git push https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@://github.com{{ github.repository }}.git HEAD:main
 
 
