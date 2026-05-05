@@ -26,7 +26,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests pandas python-dotenv
+        run: pip install requests pandas python-dotenv yfinance
 
       - name: Run script
         env:
