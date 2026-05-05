@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # 1. ADD THESE THREE LINES HERE
     env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     permissions:
@@ -33,10 +32,9 @@ jobs:
           ALPHAVANTAGE_API_KEY: ${{ secrets.ALPHAVANTAGE_API_KEY }}
         run: python fetch_market_data.py
 
-      # 2. REPLACE THE OLD "COMMIT" STEP WITH THIS ONE
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "auto: update market data"
-          file_pattern: 'NNVDA_test_automation.csv'
+          file_pattern: 'NVDA_test_automation.csv'
           skip_dirty_check: true
