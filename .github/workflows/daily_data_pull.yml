@@ -39,3 +39,4 @@ jobs:
         with:
           commit_message: "auto: update market data"
           file_pattern: 'NNVDA_test_automation.csv'
+          skip_dirty_check: true
