@@ -1,0 +1,2 @@
+Tomorrow's Predicted Price: $191.72
+Model R2 Score: 0.1205

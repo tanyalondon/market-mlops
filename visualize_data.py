@@ -1,34 +1,36 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+
 
 def create_chart():
     try:
         df = pd.read_csv("NVDA_test_automation.csv", index_col=0, parse_dates=True)
         df = df.sort_index()
-
-        # THE FIX: Automatically find the column that represents "Close"
-        # Most APIs use some variation of 'close'
         close_col = [col for col in df.columns if 'close' in col.lower()][0]
-        print(f"Using column: {close_col}")
 
-        # 2. Statistical Calculation: 7-Day Moving Average
-        df['7-Day MA'] = df[close_col].rolling(window=7).mean()
+        # 1. Prepare Data for Regression Line
+        # We need numerical X values to calculate the line of best fit
+        X = np.arange(len(df)).reshape(-1, 1)
+        y = df[close_col].values
+        model = LinearRegression().fit(X, y)
+        trend_line = model.predict(X)
 
-        # 3. Plotting
+        # 2. Plotting
         plt.figure(figsize=(12, 6))
-        plt.plot(df.index, df[close_col], label='Daily Price', alpha=0.5)
-        plt.plot(df.index, df['7-Day MA'], label='7-Day Moving Average', color='orange')
+        plt.plot(df.index, y, label='Actual Price', alpha=0.5, color='blue')
+        plt.plot(df.index, trend_line, label='Statistical Trend (Regression)', color='red', linestyle='--')
         
-        plt.title('NVIDIA (NVDA) Trend Analysis')
+        plt.title('NVIDIA (NVDA) Market Trend Analysis')
+        plt.xlabel('Date')
+        plt.ylabel('Price (USD)')
         plt.legend()
+        plt.grid(True, alpha=0.3)
+
         plt.savefig("nvda_trend_chart.png")
-        print("Success! Created 'nvda_trend_chart.png'")
+        print("Success! Updated chart with Regression Trend.")
 
     except Exception as e:
-        print(f"Error creating chart: {e}")
-
-
-
-if __name__ == "__main__":
-    create_chart()
-
+        print(f"Error: {e}")
